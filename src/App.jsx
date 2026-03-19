@@ -40,68 +40,80 @@ import Milestones from "./pages/stalk/Milestones";
 import AboutMe from "./pages/stalk/AboutMe";
 //import Secrets from "./pages/Secrets";
 
-function App() {
+import { ManifestProvider } from "./manifest/context";
+import FrontPage from "./pages/FrontPage";
+import FrontPageStudio from "./studio/FrontPageStudio";
+import StudioGate from "./pages/StudioGate";
+
+const STUDIO_ENABLED = import.meta.env.VITE_STUDIO_ENABLED === "true";
+
+export default function App() {
   return (
-      <Routes>
-        {/* Home / Landing */}
-        <Route path="/" element={<Landing />} />
+    <ManifestProvider>
+      {/* If your local URL is /fun_portfolio/, keep basename.
+         If not, remove the basename prop. */}
+        <Routes>
+          {/* ---- Home (pick ONE) ---- */}
+          {/* Option A: your original landing */}
+          {/* <Route path="/" element={<Landing />} /> */}
 
-        {/* Recruiter profile main page */}
-        <Route path="/recruiter" element={<Recruiter />} />
+          {/* Option B: the new data-driven front page */}
+          <Route path="/" element={<FrontPage />} />
 
-        {/* Sub-pages for Top Picks of Recruiter*/}
-        <Route path="/skills" element={<Skills />} />
-        <Route path="/work-permit" element={<WorkPermit />} />
-        <Route path="/experience" element={<Experience />} />
-        <Route path="/certifications" element={<Certifications />} />
-        <Route path="/recommendations" element={<Recommendations />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/contact" element={<Contact />} />
+          {/* ---- Recruiter ---- */}
+          <Route path="/recruiter" element={<Recruiter />} />
+          <Route path="/skills" element={<Skills />} />
+          <Route path="/work-permit" element={<WorkPermit />} />
+          <Route path="/experience" element={<Experience />} />
+          <Route path="/certifications" element={<Certifications />} />
+          <Route path="/recommendations" element={<Recommendations />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/contact" element={<Contact />} />
 
-        {/* Developer profile main page */}
-        <Route path="/developer" element={<Developer />} />
+          {/* ---- Developer ---- */}
+          <Route path="/developer" element={<Developer />} />
+          <Route path="/dev/projects" element={<ProjDev />} />
+          <Route path="/dev/oss" element={<OssDev />} />
+          <Route path="/dev/blog" element={<BlogDev />} />
+          <Route path="/dev/tools" element={<ToolsDev />} />
+          <Route path="/dev/contact" element={<ContactDev />} />
 
-        {/* Sub-pages for Top Picks of Developer*/}
-        <Route path="/dev/projects" element={<ProjDev />} />
-        <Route path="/dev/oss" element={<OssDev/>} />
-        <Route path="/dev/blog" element={<BlogDev/>} />
-        <Route path="/dev/tools" element={<ToolsDev />} />
-        <Route path="/dev/contact" element={<ContactDev />} />
+          {/* ---- Researcher ---- */}
+          <Route path="/researcher" element={<Researcher />} />
+          <Route path="/res/interests" element={<InterestsResearcher />} />
+          <Route path="/res/literature" element={<LiteratureResearcher />} />
+          <Route path="/res/tools" element={<ToolsResearcher />} />
+          <Route path="/res/contact" element={<ContactRes />} />
 
-        {/* Researcher profile main page */}
-        <Route path="/researcher" element={<Researcher />} />
+          {/* ---- Stalker section ---- */}
+          <Route path="/stalker" element={<StalkerHome />} />
+          <Route path="/stalker/hobbies" element={<Hobbies />} />
+          <Route path="/stalker/contact" element={<ContactStalker />} />
+          <Route path="/stalker/art-craft" element={<ArtAndCraft />} />
+          <Route path="/stalker/singing" element={<Singing />} />
+          <Route path="/stalker/click_pic" element={<Click_Pic />} />
+          <Route path="/stalker/memories" element={<GoodMemories />} />
+          <Route path="/stalker/people" element={<PeopleILove />} />
+          <Route path="/stalker/people/family" element={<Family />} />
+          <Route path="/stalker/people/friends" element={<Friends />} />
+          <Route path="/stalker/interests-bucket-list" element={<InterestBucketList />} />
+          <Route path="/stalker/facts" element={<RandomFacts />} />
+          <Route path="/stalker/about" element={<AboutMe />} />
+          <Route path="/stalker/milestones" element={<Milestones />} />
 
-        {/* Sub-pages for Top Picks of Researcher*/}
-        <Route path="/res/interests" element={<InterestsResearcher />} /> 
-        <Route path="/res/literature" element={<LiteratureResearcher />} />
-        <Route path="/res/tools" element={<ToolsResearcher />} />
-        <Route path="/res/contact" element={<ContactRes />} />
+          {/* ---- Studio (guarded) ---- */}
+          <Route
+            path="/studio/front-page"
+            element={
+              <StudioGate enabled={STUDIO_ENABLED}>
+                <FrontPageStudio />
+              </StudioGate>
+            }
+          />
 
-        {/* Profiles still under construction */}
-        <Route path="/Stalker" element={<StalkerHome />} />
-        <Route path="/stalker/hobbies" element={<Hobbies />} />
-        <Route path="/stalker/contact" element={<ContactStalker />} />
-        <Route path="/stalker/art-craft" element={<ArtAndCraft />} />
-        <Route path="/stalker/singing" element={<Singing />} />
-        <Route path="/stalker/click_pic" element={<Click_Pic />} />
-        <Route path="/stalker/memories" element={<GoodMemories />} />
-        <Route path="/stalker/people" element={<PeopleILove />} />
-        <Route path="/stalker/people/Family" element={<Family />} />
-        <Route path="/stalker/people/friends" element={<Friends />} />
-        <Route path="/stalker/interests-bucket-list" element={<InterestBucketList />} />
-        <Route path="/stalker/facts" element={<RandomFacts />} />
-        <Route path="/stalker/about" element={<AboutMe />} />
-        <Route path="/stalker/milestones" element={<Milestones />} />
-        {/*<Route path="/stalker/secrets" element={<Secrets />} />*/}
-
-        {/* Catch-all for anything not matched */}
-        <Route path="*" element={<InProgress />} />
-      </Routes>
+          {/* ---- Catch-all ---- */}
+          <Route path="*" element={<InProgress />} />
+        </Routes>
+    </ManifestProvider>
   );
 }
-
-export default App;
-
-
-
-
